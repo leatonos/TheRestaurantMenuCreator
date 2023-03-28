@@ -6,25 +6,7 @@ import styles from '../../styles/RestaurantPreview.module.css'
 export default function RestaurantPreview(props){
 
     const [restaurantLogoURL, setRestaurantLogo] = useState('')
-    const restaurantName = props.restaurantName
-    const restaurantCategories = props.restaurantInfo
     const [selectedCategory,setSelectedCategory] = useState({subCategories:[]})
-  
-    /* 
-      Just a little schema
-  
-      categories
-        >categoryName(String)
-        >subCategories(Array)
-          >subCategoryName(String)
-          >subCategoryItens(Array)
-            >itemName(String)
-            >itemImage(String)
-            >itemPrice(Double)
-            >itemAvailability(Boolean)
-            >itemDescription(String)
-  
-     */
   
     function RestaurantHeader(){
   
@@ -56,7 +38,7 @@ export default function RestaurantPreview(props){
           </div>
            {/* Categories Section */}
           <div className={styles.restaurantHeaderCategoriesContainer}>
-            {restaurantCategories.map((category,index)=>
+            {props.restaurantInfo.map((category,index)=>
               <a key={index} className={styles.anchorLink} href={`#category${index}`}>
                 <p onClick={()=>selectCategory(category)} className={styles.restaurantHeaderCategory}>
                   {category.categoryName}
@@ -134,7 +116,7 @@ export default function RestaurantPreview(props){
       }
       
       return(
-          restaurantCategories.map((category,index)=>
+        props.restaurantInfo.map((category,index)=>
           <RestaurantCategory key={index} categoryIndex={index} category={category}/>
         )
       )
@@ -148,7 +130,7 @@ export default function RestaurantPreview(props){
          <section className={styles.main} id='menuContainerPrev'>
           <RestaurantHeader />
           <div className={styles.restaurantMenuContainer}>
-            <h1>{restaurantName}</h1>
+            <h1>{props.restaurantName}</h1>
             <RestaurantMenu/>
           </div>
          </section>
