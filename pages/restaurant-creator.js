@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import styles from '../styles/RestaurantCreator.module.css'
-import RestaurantPreview from './components/restaurantPreview'
+import RestaurantPreview from '../components/restaurantPreview'
 
 //Images
 import arrowUp from '../public/img/arrow-up.svg'

@@ -10,8 +10,8 @@ export default function RestaurantPreview(props){
     const [categories, setCategories] = useState([])
 
     useEffect(()=>{
-    
-    },[])
+      
+    },[props])
   
     function RestaurantHeader(){
   
