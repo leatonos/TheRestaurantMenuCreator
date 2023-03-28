@@ -7,6 +7,14 @@ export default function RestaurantPreview(props){
 
     const [restaurantLogoURL, setRestaurantLogo] = useState('')
     const [selectedCategory,setSelectedCategory] = useState({subCategories:[]})
+
+    let categories = props.restaurantInfo
+
+    useEffect(()=>{
+      if(!categories){
+        categories = []
+      }
+    },[])
   
     function RestaurantHeader(){
   
