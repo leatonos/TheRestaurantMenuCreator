@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
-import styles from './styles/RestaurantPreview.module.css'
+import styles from '../styles/RestaurantPreview.module.css'
 
 
 export default function RestaurantPreview(props){
