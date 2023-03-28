@@ -26,8 +26,7 @@ export default function RestaurantCreator(){
     }
     
     async function saveMenu(){
-   
-      const menuTitle = 'Bom de boca'
+  
       
       try {
         const response = await fetch("/api/createMenu", {
@@ -35,7 +34,7 @@ export default function RestaurantCreator(){
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({restaurantName:menuTitle,categories:currentMenu}),
+          body: JSON.stringify({restaurantName:restaurantName,categories:currentMenu}),
         });
   
         const data = await response.json();
@@ -358,8 +357,7 @@ export default function RestaurantCreator(){
     //Restaurant Menu Creator
     return(
           <>
-            <h1>Restaurant Creator</h1>
-            <button onClick={addCategory} type='submit'>Add Category</button>
+            <button onClick={addCategory} type='submit'>Add Category</button> 
             {categoriesList}
             <button onClick={saveMenu} type='button'>Create Menu</button>
           </>
@@ -382,6 +380,10 @@ export default function RestaurantCreator(){
 
         <div className={styles.restaurantMenuContainer}>
           <div className={styles.menuCreatorContainer}>
+          <h1>Restaurant Creator</h1>
+          <label htmlFor='restaurantNameInput'>Restaurant Name</label>
+          <input type='text' onBlur={e=>setRestaurantName(e.target.value)} id='restaurantNameInput' />
+          <br/>
             <RestaurantMenuCreator/>
           </div>
           <div className={styles.previewContainer}>

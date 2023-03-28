@@ -6,34 +6,31 @@ import styles from '../styles/RestaurantPreview.module.css'
 export default function RestaurantPreview(props){
 
     const [restaurantLogoURL, setRestaurantLogo] = useState('')
-    const [selectedCategory,setSelectedCategory] = useState({subCategories:[]})
+    const [selectedCategory,setSelectedCategory] = useState({index:0,subCategories:[]})
     const [categories, setCategories] = useState([])
 
-    useEffect(()=>{
-      
+   useEffect(()=>{
+      setCategories(props.restaurantInfo)
     },[props])
   
     function RestaurantHeader(){
   
-      function selectCategory(category){
-        //console.log(category)
-        setSelectedCategory(category)
+      function selectCategory(category,index){
+        console.log(category)
+        setSelectedCategory({index:index,subCategories:category.subCategories})
       }
 
-      function navigateToSubCategory(idOfSubCategory){
-
+      function navigateToId(elementId){
         const container = document.querySelector('#menuContainerPrev')
 
-        const element = document.querySelector(idOfSubCategory)
-        const qualquerCoisa = element.offsetTop
+        const element = document.querySelector(elementId)
+        const scrollPosition = element.offsetTop-350
+        console.log(scrollPosition)
 
         container.scrollTo({
-          top: qualquerCoisa,
+          top: scrollPosition,
           behavior: "smooth",
         });
-
-        
-        
       }
   
       return(
@@ -44,8 +41,8 @@ export default function RestaurantPreview(props){
            {/* Categories Section */}
           <div className={styles.restaurantHeaderCategoriesContainer}>
             {categories.map((category,index)=>
-              <a key={index} className={styles.anchorLink} href={`#category${index}`}>
-                <p onClick={()=>selectCategory(category)} className={styles.restaurantHeaderCategory}>
+              <a key={index} className={styles.anchorLink} onClick={()=>navigateToId(`#category${index}`)}>
+                <p onClick={()=>selectCategory(category,index)} className={styles.restaurantHeaderCategory}>
                   {category.categoryName}
                 </p>
               </a>
@@ -54,7 +51,7 @@ export default function RestaurantPreview(props){
           {/* Subcategories Section */}
           <div className={styles.restaurantHeaderSubcategoryContainer}>
             {selectedCategory.subCategories.map((subCategory, index)=>
-            <a key={index} onClick={()=>navigateToSubCategory(`#subCategory${index}`)} className={styles.anchorLink} >
+            <a key={index} onClick={()=>navigateToId(`#subCategory${selectedCategory.index}${index}`)} className={styles.anchorLink} >
               <p key={index} className={styles.restaurantHeaderSubcategory}>{subCategory.subCategoryName}</p>
             </a>
             )}
@@ -98,7 +95,7 @@ export default function RestaurantPreview(props){
           }
     
           return(
-            <div id={`subCategory${props.subCategoryIndex}`}>
+            <div id={`subCategory${props.categoryIndex}${props.subCategoryIndex}`}>
               <h3>{props.subCategory.subCategoryName}</h3>
               {props.subCategory.subCategoryItens.map((item,index)=>
                 <RestaurantItem key={index} item={item}/>
@@ -111,9 +108,9 @@ export default function RestaurantPreview(props){
     
         return(
           <div className={styles.restaurantCategoryContainer} id={`category${props.categoryIndex}`}>
-            <h2>{props.category.categoryName}</h2>
+            <h2 className={styles.catName}>{props.category.categoryName}</h2>
             {props.category.subCategories.map((subCategory,index)=>
-                <RestaurantSubCategory key={index} subCategoryIndex={index} subCategory={subCategory}/>
+                <RestaurantSubCategory key={index} categoryIndex={props.categoryIndex} subCategoryIndex={index} subCategory={subCategory}/>
               )
             }
           </div>
@@ -132,9 +129,9 @@ export default function RestaurantPreview(props){
    
      return (
     
-         <section className={styles.main} id='menuContainerPrev'>
+         <section className={styles.main}>
           <RestaurantHeader />
-          <div className={styles.restaurantMenuContainer}>
+          <div className={styles.restaurantMenuContainer} id='menuContainerPrev'>
             <h1>{props.restaurantName}</h1>
             <RestaurantMenu/>
           </div>
