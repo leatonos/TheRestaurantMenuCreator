@@ -7,13 +7,10 @@ export default function RestaurantPreview(props){
 
     const [restaurantLogoURL, setRestaurantLogo] = useState('')
     const [selectedCategory,setSelectedCategory] = useState({subCategories:[]})
-
-    let categories = props.restaurantInfo
+    const [categories, setCategories] = useState([])
 
     useEffect(()=>{
-      if(!categories){
-        categories = []
-      }
+    
     },[])
   
     function RestaurantHeader(){
@@ -46,7 +43,7 @@ export default function RestaurantPreview(props){
           </div>
            {/* Categories Section */}
           <div className={styles.restaurantHeaderCategoriesContainer}>
-            {props.restaurantInfo.map((category,index)=>
+            {categories.map((category,index)=>
               <a key={index} className={styles.anchorLink} href={`#category${index}`}>
                 <p onClick={()=>selectCategory(category)} className={styles.restaurantHeaderCategory}>
                   {category.categoryName}
