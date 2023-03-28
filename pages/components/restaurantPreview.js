@@ -6,7 +6,7 @@ import styles from '../../styles/RestaurantPreview.module.css'
 export default function RestaurantPreview(props){
 
     const [restaurantLogoURL, setRestaurantLogo] = useState('')
-    const restaurantName = props.restaurantInfo.restaurantName
+    const restaurantName = props.restaurantName
     const restaurantCategories = props.restaurantInfo
     const [selectedCategory,setSelectedCategory] = useState({subCategories:[]})
   

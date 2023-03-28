@@ -386,7 +386,7 @@ export default function RestaurantCreator(){
           </div>
           <div className={styles.previewContainer}>
             <h3>Preview</h3>
-            <RestaurantPreview restaurantInfo={currentMenu}/>
+            <RestaurantPreview restaurantInfo={currentMenu} restaurantName={restaurantName} />
           </div>
         </div>
        </main>
