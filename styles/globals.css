@@ -1,0 +1,21 @@
+@font-face {
+    font-family: NiceSugar;
+    src: url(./fonts/nice-sugar.ttf);
+  }
+@font-face {
+    font-family: CaviarDreams;
+    src: url(./fonts/CaviarDreams.ttf);
+  }
+
+h1,h2,h3{
+    font-family: NiceSugar;
+}
+
+p,button,a,h4,input{
+    font-family: CaviarDreams;
+}
+
+body{
+    padding: 0;
+    margin: 0px;
+}
