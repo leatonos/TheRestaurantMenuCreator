@@ -228,6 +228,7 @@ export default function RestaurantCreator(){
                             <input type='text' defaultValue={props.item.itemName} onBlur={e=>updateItemName(e.target.value)} />
                             <input type='text' defaultValue={props.item.itemDescription} onBlur={e=>updateItemDescription(e.target.value)} />
                             <input type='number' defaultValue={props.item.itemPrice} onBlur={e=>updateItemPrice(e.target.value)} />
+                            <input type="file" name="sampleFile" />
                         </div>
                         <div className={styles.itemImageContainer}>
                             <img src={props.item.itemImage} className={styles.itemImage} />
