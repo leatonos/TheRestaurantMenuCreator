@@ -103,204 +103,7 @@ export default function RestaurantCreator(){
           list[props.categoryIndex].categoryName = name
           setCurrentMenu(list)
         }
-            const RestaurantSubCategory = (props) =>{
-
-                function updateSubcategoryName(name){
-                  let currentMenuArr = [...currentMenu]
-                  currentMenuArr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryName = name
-                  setCurrentMenu(currentMenuArr)
-                }
-                
-                function addItem(){
-                    let currentMenuArr = [...currentMenu]
-                    currentMenuArr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryItens.push(
-                        {
-                            itemName:'Item Name',
-                            itemImage:'https://placehold.jp/80x80.png',
-                            itemPrice:0.0,
-                            itemAvailability:true,
-                            itemDescription:'item description'
-                        }
-                    )
-                    setCurrentMenu(currentMenuArr) 
-                    
-                }
-
-                /**
-                 * Changes the position of a subcategory in your Category
-                 * 
-                 * @param  {} subcategoryObj - The subCategory Object you are changing position
-                 * @param  number currentPos - The current position of your SubCategory
-                 * @param  number newPos - The new position of your subcategory
-                 * 
-                */
-                function changeSubCategoryPosition(subcategoryObj,currentPos,newPos){
-                  //Makes a copy of the current State
-                  let arr = [...currentMenu]
-                  
-                    if(newPos < 0 ){return}
-
-                    //Removes the Item from current position
-                    arr[props.categoryIndex].subCategories.splice(currentPos,1)
-                    //Moves to the new postition
-                    arr[props.categoryIndex].subCategories.splice(newPos,0,subcategoryObj)
-  
-                    //Saves into state
-                    setCurrentMenu(arr) 
-
-                }
-                
-                /**
-                 * Deletes a subcategory in your Category
-                 * 
-                 * @param position - The position of your subcategory in the array
-                 * 
-                */
-                function deleteSubCategory(position){
-                  //Makes a copy of the current State
-                  let arr = [...currentMenu]
-
-                    //Removes the Item from current position
-                    arr[props.categoryIndex].subCategories.splice(position,1)
-  
-                    //Saves into state
-                    setCurrentMenu(arr) 
-                }
-
-                const RestaurantItem = (props) =>{
-                  
-                  function updateItemName(name){
-                    let currentMenuArr = [...currentMenu]
-                    currentMenuArr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryItens[props.itemIndex].itemName = name
-                    setCurrentMenu(currentMenuArr)
-                  }
-                  function updateItemDescription(description){
-                    let currentMenuArr = [...currentMenu]
-                    currentMenuArr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryItens[props.itemIndex].itemDescription = description
-                    setCurrentMenu(currentMenu)
-                  }
-                  function updateItemPrice(price){
-                    let currentMenuArr = [...currentMenu]
-                    currentMenuArr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryItens[props.itemIndex].itemPrice = price
-                    
-                    setCurrentMenu(currentMenuArr)
-                  }
-
-                /**
-                 * Changes the position of an item in your subcategory
-                 * 
-                 * @param  {} itemObj - The item Object you are changing position
-                 * @param  number currentPos - The current position of your item
-                 * @param  number newPos - The new position of your item
-                 * 
-                */
-                function changeItemPosition(itemObj,currentPos,newPos){
-                  //Makes a copy of the current State
-                  let arr = [...currentMenu]
-                  
-                    if(newPos < 0 ){return}
-
-                    //Removes the Item from current position
-                    arr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryItens.splice(currentPos,1)
-                    //Moves to the new postition
-                    arr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryItens.splice(newPos,0,itemObj)
-  
-                    //Saves into state
-                    setCurrentMenu(arr) 
-
-                }
-
-                function deleteItem(position){
-                  let arr = [...currentMenu]
-                  
-                  //Removes the Item from current position
-                  arr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryItens.splice(position,1)
-
-                  //Saves into state
-                  setCurrentMenu(arr) 
-
-                }
-
-                  //Item
-                  return(
-                      <div className={styles.itemContainer}>
-                        <div className={styles.itemDescriptionContainer}>
-                            <input type='text' defaultValue={props.item.itemName} onBlur={e=>updateItemName(e.target.value)} />
-                            <input type='text' defaultValue={props.item.itemDescription} onBlur={e=>updateItemDescription(e.target.value)} />
-                            <input type='number' defaultValue={props.item.itemPrice} onBlur={e=>updateItemPrice(e.target.value)} />
-                            <input type="file" name="sampleFile" />
-                        </div>
-                        <div className={styles.itemImageContainer}>
-                            <img src={props.item.itemImage} className={styles.itemImage} />
-                        </div>
-                        <div className={styles.positionEditor}>
-                          <div className={styles.arrowContainer}>
-                            <Image onClick={()=>changeItemPosition(props.item,props.itemIndex,props.itemIndex-1)} src={arrowUp} className={styles.arrow} alt='bring this item up'/>
-                          </div>
-                          <div className={styles.postionNumContainer}>
-                            <p className={styles.positionNum}>{props.itemIndex+1}</p>
-                          </div>
-                          <div className={styles.arrowContainer}>
-                            <Image onClick={()=>changeItemPosition(props.item,props.itemIndex,props.itemIndex+1)} src={arrowDown} className={styles.arrow} alt='bring this item down'/>
-                          </div>
-                        </div>
-                        <div className={styles.trashContainer}>
-                          <Image onClick={()=>deleteItem(props.itemIndex)} src={trashCan} className={styles.trashIcon} alt='delete this item'/>
-                        </div>
-                      </div>
-                  )
-        
-                }
-
-
-                //SubCategory
-                return(
-                <div className={styles.subCategoryContainer}>
-                    
-                    <div className={styles.subcategoryNameContainer}>
-                      <div className={styles.subcategoryNameEditor}>
-                        <input type='text' defaultValue={props.subCategory.subCategoryName} onBlur={e => updateSubcategoryName(e.target.value)} className={styles.categoryNameEditor}/>
-                      </div>
-                      <div className={styles.positionEditor}>
-                        <div className={styles.arrowContainer}>
-                          <Image onClick={()=>changeSubCategoryPosition(props.subCategory,props.subCategoryIndex,props.subCategoryIndex-1)} src={arrowUp} className={styles.arrow} alt='bring this subcategory up'/>
-                        </div>
-                        <div className={styles.postionNumContainer}>
-                          <p className={styles.positionNum}>{props.subCategoryIndex+1}</p>
-                        </div>
-                        <div className={styles.arrowContainer}>
-                          <Image onClick={()=>changeSubCategoryPosition(props.subCategory,props.subCategoryIndex,props.subCategoryIndex+1)} src={arrowDown} className={styles.arrow} alt='bring this subcategory down'/>
-                        </div>
-                      </div>
-                      <div className={styles.trashContainer}>
-                        <Image onClick={()=>deleteSubCategory(props.subCategoryIndex)} src={trashCan} className={styles.trashIcon} alt='delete this item'/>
-                      </div>
-                    </div>
-                    
-                    <div className={styles.itemsContainer}>
-                      {props.subCategory.subCategoryItens.map((item,index)=>
-                        <RestaurantItem 
-                          key={index} 
-                          item={item} 
-                          itemIndex={index} 
-                          categoryIndex={props.categoryIndex} 
-                          subCategoryIndex={props.subCategoryIndex} 
-                        />
-                      )}
-                    </div>
-                    <button className={styles.addButton} onClick={addItem}>
-                      <Image 
-                        src={addButton}
-                        className={styles.addButtonImage}
-                        alt='Add item icon'
-                      />
-                      Add Item
-                    </button>
-                </div>
-                
-                )
-        
-            }
+           
       //Category
       return(
         <div className={styles.restaurantCategoryContainer} id={`category${props.categoryIndex}`}>
@@ -325,7 +128,7 @@ export default function RestaurantCreator(){
           </div>
           <div className={styles.subCategoriesContainer}>
             {props.category.subCategories.map((subCategory,index)=>
-                <RestaurantSubCategory 
+                <MenuSubCategory 
                   key={index} 
                   categoryIndex={props.categoryIndex} 
                   subCategoryIndex={index} 
@@ -345,6 +148,240 @@ export default function RestaurantCreator(){
          </button>
         </div>
       )
+    }
+
+    const MenuSubCategory = (props) =>{
+
+      function updateSubcategoryName(name){
+        let currentMenuArr = [...currentMenu]
+        currentMenuArr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryName = name
+        setCurrentMenu(currentMenuArr)
+      }
+      
+      function addItem(){
+          let currentMenuArr = [...currentMenu]
+          currentMenuArr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryItens.push(
+              {
+                  itemName:'Item Name',
+                  itemImage:'https://placehold.jp/80x80.png',
+                  itemPrice:0.0,
+                  itemAvailability:true,
+                  itemDescription:'item description'
+              }
+          )
+          setCurrentMenu(currentMenuArr) 
+          
+      }
+
+      /**
+       * Changes the position of a subcategory in your Category
+       * 
+       * @param  {} subcategoryObj - The subCategory Object you are changing position
+       * @param  number currentPos - The current position of your SubCategory
+       * @param  number newPos - The new position of your subcategory
+       * 
+      */
+      function changeSubCategoryPosition(subcategoryObj,currentPos,newPos){
+        //Makes a copy of the current State
+        let arr = [...currentMenu]
+        
+          if(newPos < 0 ){return}
+
+          //Removes the Item from current position
+          arr[props.categoryIndex].subCategories.splice(currentPos,1)
+          //Moves to the new postition
+          arr[props.categoryIndex].subCategories.splice(newPos,0,subcategoryObj)
+
+          //Saves into state
+          setCurrentMenu(arr) 
+
+      }
+      
+      /**
+       * Deletes a subcategory in your Category
+       * 
+       * @param position - The position of your subcategory in the array
+       * 
+      */
+      function deleteSubCategory(position){
+        //Makes a copy of the current State
+        let arr = [...currentMenu]
+
+          //Removes the Item from current position
+          arr[props.categoryIndex].subCategories.splice(position,1)
+
+          //Saves into state
+          setCurrentMenu(arr) 
+      }
+
+
+
+      //SubCategory
+      return(
+      <div className={styles.subCategoryContainer}>
+          
+          <div className={styles.subcategoryNameContainer}>
+            <div className={styles.subcategoryNameEditor}>
+              <input type='text' defaultValue={props.subCategory.subCategoryName} onBlur={e => updateSubcategoryName(e.target.value)} className={styles.categoryNameEditor}/>
+            </div>
+            <div className={styles.positionEditor}>
+              <div className={styles.arrowContainer}>
+                <Image onClick={()=>changeSubCategoryPosition(props.subCategory,props.subCategoryIndex,props.subCategoryIndex-1)} src={arrowUp} className={styles.arrow} alt='bring this subcategory up'/>
+              </div>
+              <div className={styles.postionNumContainer}>
+                <p className={styles.positionNum}>{props.subCategoryIndex+1}</p>
+              </div>
+              <div className={styles.arrowContainer}>
+                <Image onClick={()=>changeSubCategoryPosition(props.subCategory,props.subCategoryIndex,props.subCategoryIndex+1)} src={arrowDown} className={styles.arrow} alt='bring this subcategory down'/>
+              </div>
+            </div>
+            <div className={styles.trashContainer}>
+              <Image onClick={()=>deleteSubCategory(props.subCategoryIndex)} src={trashCan} className={styles.trashIcon} alt='delete this item'/>
+            </div>
+          </div>
+          
+          <div className={styles.itemsContainer}>
+            {props.subCategory.subCategoryItens.map((item,index)=>
+              <MenuItem 
+                key={index} 
+                item={item} 
+                itemIndex={index} 
+                categoryIndex={props.categoryIndex} 
+                subCategoryIndex={props.subCategoryIndex} 
+              />
+            )}
+          </div>
+          <button className={styles.addButton} onClick={addItem}>
+            <Image 
+              src={addButton}
+              className={styles.addButtonImage}
+              alt='Add item icon'
+            />
+            Add Item
+          </button>
+      </div>
+      
+      )
+
+  }
+
+    const MenuItem = (props) =>{
+    
+      function updateItemName(name){
+        let currentMenuArr = [...currentMenu]
+        currentMenuArr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryItens[props.itemIndex].itemName = name
+        setCurrentMenu(currentMenuArr)
+      }
+      function updateItemDescription(description){
+        let currentMenuArr = [...currentMenu]
+        currentMenuArr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryItens[props.itemIndex].itemDescription = description
+        setCurrentMenu(currentMenu)
+      }
+      function updateItemPrice(price){
+        let currentMenuArr = [...currentMenu]
+        currentMenuArr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryItens[props.itemIndex].itemPrice = price
+        
+        setCurrentMenu(currentMenuArr)
+      }
+  
+    /**
+     * Changes the position of an item in your subcategory
+     * 
+     * @param  {} itemObj - The item Object you are changing position
+     * @param  number currentPos - The current position of your item
+     * @param  number newPos - The new position of your item
+     * 
+    */
+    function changeItemPosition(itemObj,currentPos,newPos){
+      //Makes a copy of the current State
+      let arr = [...currentMenu]
+      
+        if(newPos < 0 ){return}
+  
+        //Removes the Item from current position
+        arr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryItens.splice(currentPos,1)
+        //Moves to the new postition
+        arr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryItens.splice(newPos,0,itemObj)
+  
+        //Saves into state
+        setCurrentMenu(arr) 
+  
+    }
+  
+    function deleteItem(position){
+      let arr = [...currentMenu]
+      
+      //Removes the Item from current position
+      arr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryItens.splice(position,1)
+  
+      //Saves into state
+      setCurrentMenu(arr) 
+  
+    }
+
+    async function changeImage(image){
+
+      if(image.size > 250000){
+        console.log('File is too big')
+        return
+      }
+
+      //Get a secure URL to upload the image
+      const url = await fetch("/api/uploadPhotoItem").then( res => res.json())
+      //console.log(url)
+
+     
+      //Upload the image
+      await fetch(url,{
+        method:'PUT',
+        headers:{
+          'Content-Type': image.type
+        },
+        body: image
+      })
+      
+      //Retrieve the image link
+      const imageLink = url.split('?')[0]
+      //console.log(imageLink)
+     
+      //Now we update the state of the menu to show the image
+      let currentMenuArr = [...currentMenu]
+      currentMenuArr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryItens[props.itemIndex].itemImage = imageLink
+      
+      setCurrentMenu(currentMenuArr)
+      
+
+    }
+  
+      //Item
+      return(
+          <div className={styles.itemContainer}>
+            <div className={styles.itemDescriptionContainer}>
+                <input type='text' defaultValue={props.item.itemName} onBlur={e=>updateItemName(e.target.value)} />
+                <input type='text' defaultValue={props.item.itemDescription} onBlur={e=>updateItemDescription(e.target.value)} />
+                <input type='number' defaultValue={props.item.itemPrice} onBlur={e=>updateItemPrice(e.target.value)} />
+                <input type="file" onChange={e=>changeImage(e.target.files[0])} name="sampleFile" accept="image/*" />
+            </div>
+            <div className={styles.itemImageContainer}>
+                <img src={props.item.itemImage} className={styles.itemImage} />
+            </div>
+            <div className={styles.positionEditor}>
+              <div className={styles.arrowContainer}>
+                <Image onClick={()=>changeItemPosition(props.item,props.itemIndex,props.itemIndex-1)} src={arrowUp} className={styles.arrow} alt='bring this item up'/>
+              </div>
+              <div className={styles.postionNumContainer}>
+                <p className={styles.positionNum}>{props.itemIndex+1}</p>
+              </div>
+              <div className={styles.arrowContainer}>
+                <Image onClick={()=>changeItemPosition(props.item,props.itemIndex,props.itemIndex+1)} src={arrowDown} className={styles.arrow} alt='bring this item down'/>
+              </div>
+            </div>
+            <div className={styles.trashContainer}>
+              <Image onClick={()=>deleteItem(props.itemIndex)} src={trashCan} className={styles.trashIcon} alt='delete this item'/>
+            </div>
+          </div>
+      )
+  
     }
 
     const categoriesList = currentMenu.map((category,index)=>
