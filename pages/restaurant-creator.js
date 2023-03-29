@@ -339,6 +339,9 @@ export default function RestaurantCreator(){
         },
         body: image
       })
+      .catch(err=>{
+        console.log(err)
+      })
       
       //Retrieve the image link
       const imageLink = url.split('?')[0]
