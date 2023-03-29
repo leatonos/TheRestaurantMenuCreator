@@ -339,6 +339,7 @@ export default function RestaurantCreator(){
         },
         body: image
       })
+      //Get errors
       .catch(err=>{
         console.log(err)
       })
