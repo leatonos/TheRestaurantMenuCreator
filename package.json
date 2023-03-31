@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@auth0/nextjs-auth0": "^2.4.0",
     "@aws-sdk/client-s3": "^3.301.0",
     "aws-cdk": "2.0",
     "aws-sdk": "^2.1345.0",

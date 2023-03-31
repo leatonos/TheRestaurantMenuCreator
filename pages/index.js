@@ -29,6 +29,10 @@ export async function getServerSideProps(context) {
   }
 }
 
+function Login() {
+ return <a href="/api/auth/login">Login</a>;
+}
+
 
 export default function Home({restaurants}){
 
@@ -45,14 +49,15 @@ export default function Home({restaurants}){
          <link rel="icon" href="/favicon.ico" />
        </Head>
        <main className={styles.main}>
-        <h1>Hello</h1>
+        <h1>Restaurant Creator Login</h1>
         <Link
-              href={{
-                pathname: '/restaurant-creator'
-              }}
-            >
-              <button>Create Restaurant</button>
-            </Link>
+          href={{
+            pathname: '/restaurant-creator'
+          }}
+        >
+          <button>Create Restaurant</button>
+        </Link>
+        <Login/>
        </main>
      </>
    )
