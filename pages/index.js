@@ -33,6 +33,10 @@ function Login() {
  return <a href="/api/auth/login">Login</a>;
 }
 
+function Logout() {
+  return <a href="/api/auth/logout">Logout</a>;
+ }
+
 
 export default function Home({restaurants}){
 
@@ -57,7 +61,15 @@ export default function Home({restaurants}){
         >
           <button>Create Restaurant</button>
         </Link>
+        <Link
+          href={{
+            pathname: '/profile'
+          }}
+        >
+          <button>Profile</button>
+        </Link>
         <Login/>
+        <Logout/>
        </main>
      </>
    )
