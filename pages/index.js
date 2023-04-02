@@ -1,48 +1,69 @@
 import Head from 'next/head'
-import clientPromise from '../lib/mongodb'
+//import clientPromise from '../lib/mongodb'
 import { useEffect } from 'react'
 import styles from '../styles/Home.module.css'
 import Link from 'next/link';
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 
-export async function getServerSideProps(context) {
-  try {
-    await clientPromise
-   
-    const client = await clientPromise
-    const db = client.db("TheOnlineMenu")
-
-    const restaurants = await db
-            .collection("Restaurants")
-            .find({})
-            .sort({ })
-            .limit(20)
-            .toArray();
-    return {
-      props: { restaurants: JSON.stringify(restaurants) },
-    }
-  } catch (e) {
-    console.error(e)
-    return {
-      props: { isConnected: false },
-    }
-  }
-}
-
-function Login() {
- return <a href="/api/auth/login">Login</a>;
-}
-
-function Logout() {
-  return <a href="/api/auth/logout">Logout</a>;
- }
 
 
 export default function Home({restaurants}){
 
-  useEffect(()=>{
-    console.log(JSON.parse(restaurants))
-  },[])
+  const { user, error, isLoading } = useUser();
+
+  if(user){
+    const userId = user.sid
+  }
+
+  function Login() {
+    if(!user){
+    return (
+       <Link
+         href={{
+           pathname: '/api/auth/login'
+         }}
+         >
+         <button>Login</button>
+       </Link>
+     )
+    }
+   }
+   
+   function Logout() {
+     if(user){
+       return (
+         <Link
+         href={{
+           pathname: '/api/auth/logout'
+         }}
+         >
+         <button>Logout</button>
+       </Link>
+       )
+     }
+    
+    
+   }
+   
+   function ProfileLink(){
+    if(user){
+     return(
+         <Link
+         href={{
+           pathname: '/profile'
+         }}
+         >
+         <button>Profile</button>
+       </Link>
+     )
+    }
+   }
+   
+
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>{error.message}</div>;
  
    return (
      <>
@@ -54,22 +75,10 @@ export default function Home({restaurants}){
        </Head>
        <main className={styles.main}>
         <h1>Restaurant Creator Login</h1>
-        <Link
-          href={{
-            pathname: '/restaurant-creator'
-          }}
-        >
-          <button>Create Restaurant</button>
-        </Link>
-        <Link
-          href={{
-            pathname: '/profile'
-          }}
-        >
-          <button>Profile</button>
-        </Link>
+    
         <Login/>
         <Logout/>
+        <ProfileLink/>
        </main>
      </>
    )

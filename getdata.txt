@@ -1,0 +1,25 @@
+/*
+export async function getServerSideProps(context) {
+  try {
+    await clientPromise
+   
+    const client = await clientPromise
+    const db = client.db("TheOnlineMenu")
+
+    const restaurants = await db
+            .collection("Restaurants")
+            .find({})
+            .sort({ })
+            .limit(20)
+            .toArray();
+    return {
+      props: { restaurants: JSON.stringify(restaurants) },
+    }
+  } catch (e) {
+    console.error(e)
+    return {
+      props: { isConnected: false },
+    }
+  }
+}
+*/

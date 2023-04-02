@@ -1,13 +1,14 @@
 import clientPromise from "../../lib/mongodb";
 
 export default async (req, res) => {
+    
    try {
        const client = await clientPromise;
        const db = client.db("TheOnlineMenu");
 
        const restaurants = await db
            .collection("Restaurants")
-           .find({})
+           .find({ownerId:req.body.ownerId})
            .sort({ })
            .limit(10)
            .toArray();
@@ -16,4 +17,6 @@ export default async (req, res) => {
    } catch (e) {
        console.error(e);
    }
+   
+
 };

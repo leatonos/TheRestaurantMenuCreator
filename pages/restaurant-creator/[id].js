@@ -2,19 +2,76 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import styles from '../styles/RestaurantCreator.module.css'
-import RestaurantPreview from '../components/restaurantPreview'
+import styles from '../../styles/RestaurantCreator.module.css'
+import RestaurantPreview from '../../components/restaurantPreview'
+
+
+import { ObjectId } from 'mongodb'
+import clientPromise from '../../lib/mongodb'
+
+
+//Auth
+import { useUser } from '@auth0/nextjs-auth0/client';
+import Link from 'next/link';
 
 //Images
-import arrowUp from '../public/img/arrow-up.svg'
-import arrowDown from '../public/img/arrow-down.svg'
-import addButton from '../public/img/add-plus-circle.svg'
-import trashCan from '../public/img/trash-full.svg'
+import arrowUp from '../../public/img/arrow-up.svg'
+import arrowDown from '../../public/img/arrow-down.svg'
+import addButton from '../../public/img/add-plus-circle.svg'
+import trashCan from '../../public/img/trash-full.svg'
 
-export default function RestaurantCreator(){
+export async function getServerSideProps(context) {
 
+    //Retrieves the restaurant Id from the link
+    const restaurantId = context.query.id
+    
+  try {
+    await clientPromise
+   
+    const client = await clientPromise
+    const db = client.db("TheOnlineMenu")
+
+    const restaurant = await db
+            .collection("Restaurants")
+            .findOne({_id:ObjectId(restaurantId)})
+    return {
+      props: { restaurantResult: JSON.stringify(restaurant) },
+    }
+  } catch (e) {
+    console.error(e)
+    return {
+      props: { isConnected: false },
+    }
+  }
+}
+
+export default function RestaurantCreator({restaurantResult}){
+  
   const [currentMenu, setCurrentMenu] = useState([])
   const [restaurantName, setRestaurantName] = useState('')
+  
+  const { user, error, isLoading } = useUser();
+  const router = useRouter()
+
+  const serverResponse = JSON.parse(restaurantResult)
+
+
+  useEffect(()=>{
+   if(!user){
+    router.push('/')
+   }
+  },[user])
+
+  useEffect(()=>{
+    if(isLoading){return}
+    if(user.sub == serverResponse.ownerId){
+      setRestaurantName(serverResponse.restaurantName)
+      setCurrentMenu(serverResponse.categories)
+    }else{   
+      router.push('/')
+    }
+  },[user])
+
 
   const RestaurantMenuCreator = () =>{
    
@@ -25,16 +82,16 @@ export default function RestaurantCreator(){
        console.log(list)
     }
     
-    async function saveMenu(){
+    async function updateMenu(){
   
       
       try {
-        const response = await fetch("/api/createMenu", {
+        const response = await fetch("/api/updateMenu", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({restaurantName:restaurantName,categories:currentMenu}),
+          body: JSON.stringify({restaurantName:restaurantName,categories:currentMenu,id:serverResponse._id}),
         });
   
         const data = await response.json();
@@ -385,7 +442,6 @@ export default function RestaurantCreator(){
             </div>
           </div>
       )
-  
     }
 
     const categoriesList = currentMenu.map((category,index)=>
@@ -401,7 +457,7 @@ export default function RestaurantCreator(){
           <>
             <button onClick={addCategory} type='submit'>Add Category</button> 
             {categoriesList}
-            <button onClick={saveMenu} type='button'>Create Menu</button>
+            <button onClick={updateMenu} type='button'>Update Menu</button>
           </>
         
     )
@@ -422,7 +478,8 @@ export default function RestaurantCreator(){
 
         <div className={styles.restaurantMenuContainer}>
           <div className={styles.menuCreatorContainer}>
-          <h1>Restaurant Creator</h1>
+          <h1>Restaurant Editor</h1>
+          
           <label htmlFor='restaurantNameInput'>Restaurant Name</label>
           <input type='text' onBlur={e=>setRestaurantName(e.target.value)} id='restaurantNameInput' />
           <br/>
