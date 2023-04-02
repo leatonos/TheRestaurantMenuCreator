@@ -19,6 +19,8 @@ import arrowUp from '../../public/img/arrow-up.svg'
 import arrowDown from '../../public/img/arrow-down.svg'
 import addButton from '../../public/img/add-plus-circle.svg'
 import trashCan from '../../public/img/trash-full.svg'
+import hide from '../../public/img/hide.svg'
+import show from '../../public/img/show.svg'
 
 export async function getServerSideProps(context) {
 
@@ -57,6 +59,8 @@ export default function RestaurantCreator({restaurantResult}){
 
 
   useEffect(()=>{
+    
+   if(isLoading){return}
    if(!user){
     router.push('/')
    }
@@ -72,51 +76,55 @@ export default function RestaurantCreator({restaurantResult}){
     }
   },[user])
 
+  async function updateMenu(){
+  
+    try {
+      const response = await fetch("/api/updateMenu", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({restaurantName:restaurantName,categories:currentMenu,id:serverResponse._id}),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+      console.log(data) ;
+    } catch(error) {
+      // Consider implementing your own error handling logic here
+      console.error(error);
+      alert(error.message);
+    }
+    
+
+  }
+
 
   const RestaurantMenuCreator = () =>{
    
     function addCategory(){
         let list = [...currentMenu];
-        list.push({categoryName:'Category Name',subCategories:[]})
+        list.push({categoryName:'Category Name',subCategories:[],visible:true})
         setCurrentMenu(list)
        console.log(list)
     }
-    
-    async function updateMenu(){
-  
-      
-      try {
-        const response = await fetch("/api/updateMenu", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({restaurantName:restaurantName,categories:currentMenu,id:serverResponse._id}),
-        });
-  
-        const data = await response.json();
-        if (response.status !== 200) {
-          throw data.error || new Error(`Request failed with status ${response.status}`);
-        }
-        console.log(data) ;
-      } catch(error) {
-        // Consider implementing your own error handling logic here
-        console.error(error);
-        alert(error.message);
-      }
-      
-  
-    }
-
     const MenuCategory = (props) =>{
 
         function addSubcategory(){
            
-            //updating the data inside the category
-            let currentMenuArr = [...currentMenu]
-            currentMenuArr[props.categoryIndex].subCategories.push({subCategoryName:'Subcategory Name',subCategoryItens:[]})
-
-            setCurrentMenu(currentMenuArr)
+             //updating the data inside the category
+             let currentMenuArr = [...currentMenu]
+             currentMenuArr[props.categoryIndex].subCategories.push(
+               {
+                 subCategoryName:'Subcategory Name',
+                 subCategoryItens:[],
+                 visible:true
+               }
+             )
+ 
+             setCurrentMenu(currentMenuArr)
             
 
         }
@@ -160,6 +168,23 @@ export default function RestaurantCreator({restaurantResult}){
           list[props.categoryIndex].categoryName = name
           setCurrentMenu(list)
         }
+
+        function showHideCategory(){
+          let list = [...currentMenu];
+          list[props.categoryIndex].visible = !list[props.categoryIndex].visible
+          setCurrentMenu(list)
+    
+      }
+
+        function categoryVisibility(){
+          let list = [...currentMenu];
+          if(list[props.categoryIndex].visible){
+            return show
+          }else{
+            return hide
+          }  
+        }
+         
            
       //Category
       return(
@@ -167,6 +192,7 @@ export default function RestaurantCreator({restaurantResult}){
           <div className={styles.categoryNameContainer}>
             <div className={styles.nameEditor}>
               <input type='text' defaultValue={props.category.categoryName} onBlur={e => updateCategoryName(e.target.value)} className='categoryNameEditor'/>
+              <Image src={categoryVisibility()} onClick={showHideCategory} className={styles.eye} alt='Change the visibility of this Item'/>
             </div>
             <div className={styles.positionEditor}>
               <div className={styles.arrowContainer}>
@@ -222,7 +248,7 @@ export default function RestaurantCreator({restaurantResult}){
                   itemName:'Item Name',
                   itemImage:'https://placehold.jp/80x80.png',
                   itemPrice:0.0,
-                  itemAvailability:true,
+                  visible:true,
                   itemDescription:'item description'
               }
           )
@@ -271,6 +297,25 @@ export default function RestaurantCreator({restaurantResult}){
           setCurrentMenu(arr) 
       }
 
+      function showHideSubCategory(){
+        const position = props.subCategoryIndex
+        let list = [...currentMenu];
+        list[props.categoryIndex].subCategories[position].visible = !list[props.categoryIndex].subCategories[position].visible
+
+        setCurrentMenu(list)
+
+      }
+
+      function subcategoryVisibility(){
+        const position = props.subCategoryIndex
+        let list = [...currentMenu];
+        if(list[props.categoryIndex].subCategories[position].visible){
+          return show
+        }else{
+          return hide
+        }  
+      }
+
 
 
       //SubCategory
@@ -280,6 +325,7 @@ export default function RestaurantCreator({restaurantResult}){
           <div className={styles.subcategoryNameContainer}>
             <div className={styles.subcategoryNameEditor}>
               <input type='text' defaultValue={props.subCategory.subCategoryName} onBlur={e => updateSubcategoryName(e.target.value)} className={styles.categoryNameEditor}/>
+              <Image src={subcategoryVisibility()} onClick={showHideSubCategory} className={styles.eye} alt='Change the visibility of this Item'/>
             </div>
             <div className={styles.positionEditor}>
               <div className={styles.arrowContainer}>
@@ -340,6 +386,25 @@ export default function RestaurantCreator({restaurantResult}){
         
         setCurrentMenu(currentMenuArr)
       }
+
+      function changeItemVisibility(){
+        let currentMenuArr = [...currentMenu]
+        currentMenuArr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryItens[props.itemIndex].visible = !currentMenuArr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryItens[props.itemIndex].visible
+        
+        setCurrentMenu(currentMenuArr)
+      }
+
+      function itemVisibility(){
+
+        let currentMenuArr = [...currentMenu]
+        const itemVisible = currentMenuArr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryItens[props.itemIndex].visible
+
+        if(itemVisible){
+          return show
+        }else{
+          return hide
+        }
+      }
   
     /**
      * Changes the position of an item in your subcategory
@@ -378,6 +443,7 @@ export default function RestaurantCreator({restaurantResult}){
 
     async function changeImage(image){
 
+      //Checks image size
       if(image.size > 250000){
         console.log('File is too big')
         return
@@ -422,6 +488,7 @@ export default function RestaurantCreator({restaurantResult}){
                 <input type='text' defaultValue={props.item.itemDescription} onBlur={e=>updateItemDescription(e.target.value)} />
                 <input type='number' defaultValue={props.item.itemPrice} onBlur={e=>updateItemPrice(e.target.value)} />
                 <input type="file" onChange={e=>changeImage(e.target.files[0])} name="sampleFile" accept="image/*" />
+                <Image src={itemVisibility()} onClick={changeItemVisibility} className={styles.eye} alt='Change the visibility of this Item'/>
             </div>
             <div className={styles.itemImageContainer}>
                 <img src={props.item.itemImage} className={styles.itemImage} />
@@ -456,8 +523,10 @@ export default function RestaurantCreator({restaurantResult}){
     return(
           <>
             <button onClick={addCategory} type='submit'>Add Category</button> 
-            {categoriesList}
-            <button onClick={updateMenu} type='button'>Update Menu</button>
+            <div className={styles.categoriesContainer}>
+              {categoriesList}
+            </div>
+            
           </>
         
     )
@@ -481,9 +550,10 @@ export default function RestaurantCreator({restaurantResult}){
           <h1>Restaurant Editor</h1>
           
           <label htmlFor='restaurantNameInput'>Restaurant Name</label>
-          <input type='text' onBlur={e=>setRestaurantName(e.target.value)} id='restaurantNameInput' />
+          <input type='text' onBlur={e=>setRestaurantName(e.target.value)} defaultValue={restaurantName} id='restaurantNameInput' />
           <br/>
             <RestaurantMenuCreator/>
+            <button onClick={updateMenu} type='button'>Update Menu</button>
           </div>
           <div className={styles.previewContainer}>
             <h3>Preview</h3>

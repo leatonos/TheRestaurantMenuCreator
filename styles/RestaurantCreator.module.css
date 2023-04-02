@@ -9,6 +9,10 @@
 .menuCreatorContainer{
     width: calc(100% - 500px);
 }
+.categoriesContainer{
+    height: calc(100vh - 200px);
+    overflow-y: auto;
+}
 
 /* Categories */
 .restaurantCategoryContainer{
@@ -21,6 +25,11 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+
+.nameEditor{
+    display: flex;
+    flex-direction: column;
 }
 
 /* Subcategories */
@@ -103,6 +112,11 @@
     align-items: center;
 }
 .trashIcon{
+    width: 30px;
+    height: 30px;
+}
+/*Eye*/
+.eye{
     width: 30px;
     height: 30px;
 }

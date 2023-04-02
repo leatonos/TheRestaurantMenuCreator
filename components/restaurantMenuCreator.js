@@ -1,87 +1,39 @@
-import Head from 'next/head'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import styles from '../../styles/RestaurantCreator.module.css'
-import RestaurantPreview from '../../components/restaurantPreview'
-
-//Auth
-import { useUser } from '@auth0/nextjs-auth0/client';
-import Link from 'next/link';
+import styles from '../styles/RestaurantCreator.module.css'
 
 //Images
-import arrowUp from '../../public/img/arrow-up.svg'
-import arrowDown from '../../public/img/arrow-down.svg'
-import addButton from '../../public/img/add-plus-circle.svg'
-import trashCan from '../../public/img/trash-full.svg'
-import hide from '../../public/img/hide.svg'
-import show from '../../public/img/show.svg'
+import arrowUp from '../public/img/arrow-up.svg'
+import arrowDown from '../public/img/arrow-down.svg'
+import addButton from '../public/img/add-plus-circle.svg'
+import trashCan from '../public/img/trash-full.svg'
+import hide from '../public/img/hide.svg'
+import show from '../public/img/show.svg'
 
 
-export default function RestaurantCreator(){
-  
-  const [currentMenu, setCurrentMenu] = useState([])
-  const [restaurantName, setRestaurantName] = useState('')
-  
-  const { user, error, isLoading } = useUser();
-  const router = useRouter()
-
-  useEffect(()=>{
-    if(isLoading){return}
-    if(!user){
-      router.push('/')
-    }
-  },[user])
-
-  async function saveMenu(){
-    try {
-      const response = await fetch("/api/createMenu", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({restaurantName:restaurantName,categories:currentMenu,ownerId:user.sub}),
-      });
-
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
-      }
-      console.log(data) ;
-    } catch(error) {
-      // Consider implementing your own error handling logic here
-      console.error(error);
-      alert(error.message);
-    }
-    
-
-  }
-
-  const RestaurantMenuCreator = () =>{
-
+export default function RestaurantMenuCreator(){
+   
     function addCategory(){
         let list = [...currentMenu];
         list.push({categoryName:'Category Name',subCategories:[],visible:true})
         setCurrentMenu(list)
        console.log(list)
     }
-    
-
     const MenuCategory = (props) =>{
 
         function addSubcategory(){
            
-            //updating the data inside the category
-            let currentMenuArr = [...currentMenu]
-            currentMenuArr[props.categoryIndex].subCategories.push(
-              {
-                subCategoryName:'Subcategory Name',
-                subCategoryItens:[],
-                visible:true
-              }
-            )
-
-            setCurrentMenu(currentMenuArr)
+             //updating the data inside the category
+             let currentMenuArr = [...currentMenu]
+             currentMenuArr[props.categoryIndex].subCategories.push(
+               {
+                 subCategoryName:'Subcategory Name',
+                 subCategoryItens:[],
+                 visible:true
+               }
+             )
+ 
+             setCurrentMenu(currentMenuArr)
             
 
         }
@@ -120,26 +72,28 @@ export default function RestaurantCreator(){
 
         }
 
-        function showHideCategory(){
-            let list = [...currentMenu];
-            list[props.categoryIndex].visible = !list[props.categoryIndex].visible
-            setCurrentMenu(list)
-        }
-
         function updateCategoryName(name){
           let list = [...currentMenu];
           list[props.categoryIndex].categoryName = name
           setCurrentMenu(list)
         }
 
-      function categoryVisibility(){
-        let list = [...currentMenu];
-        if(list[props.categoryIndex].visible){
-          return show
-        }else{
-          return hide
-        }  
+        function showHideCategory(){
+          let list = [...currentMenu];
+          list[props.categoryIndex].visible = !list[props.categoryIndex].visible
+          setCurrentMenu(list)
+    
       }
+
+        function categoryVisibility(){
+          let list = [...currentMenu];
+          if(list[props.categoryIndex].visible){
+            return show
+          }else{
+            return hide
+          }  
+        }
+         
            
       //Category
       return(
@@ -261,7 +215,6 @@ export default function RestaurantCreator(){
 
       }
 
-
       function subcategoryVisibility(){
         const position = props.subCategoryIndex
         let list = [...currentMenu];
@@ -271,6 +224,8 @@ export default function RestaurantCreator(){
           return hide
         }  
       }
+
+
 
       //SubCategory
       return(
@@ -340,6 +295,7 @@ export default function RestaurantCreator(){
         
         setCurrentMenu(currentMenuArr)
       }
+
       function changeItemVisibility(){
         let currentMenuArr = [...currentMenu]
         currentMenuArr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryItens[props.itemIndex].visible = !currentMenuArr[props.categoryIndex].subCategories[props.subCategoryIndex].subCategoryItens[props.itemIndex].visible
@@ -396,6 +352,7 @@ export default function RestaurantCreator(){
 
     async function changeImage(image){
 
+      //Checks image size
       if(image.size > 250000){
         console.log('File is too big')
         return
@@ -474,7 +431,7 @@ export default function RestaurantCreator(){
     //Restaurant Menu Creator
     return(
           <>
-            <button onClick={addCategory} type='submit'>Add Category</button>
+            <button onClick={addCategory} type='submit'>Add Category</button> 
             <div className={styles.categoriesContainer}>
               {categoriesList}
             </div>
@@ -484,35 +441,3 @@ export default function RestaurantCreator(){
     )
 
   }
- 
-  //RestaurantCreatorContainer
-   return (
-     <>
-       <Head>
-         <title>Restaurant Creator Menu</title>
-         <meta name="description" content='Restaurant creator' />
-         <meta name="viewport" content="width=device-width, initial-scale=1" />
-         <link rel="icon" href="/favicon.ico" />
-       </Head>
-
-       <main className={styles.main}>
-
-        <div className={styles.restaurantMenuContainer}>
-          <div className={styles.menuCreatorContainer}>
-          <h1>Restaurant Creator</h1>
-          <label htmlFor='restaurantNameInput'>Restaurant Name</label>
-          <input type='text' onBlur={e=>setRestaurantName(e.target.value)} id='restaurantNameInput' />
-          <br/>
-            <RestaurantMenuCreator/>
-            <button onClick={saveMenu} type='button'>Create Menu</button>
-          </div>
-          <div className={styles.previewContainer}>
-            <h3>Preview</h3>
-            <RestaurantPreview restaurantInfo={currentMenu} restaurantName={restaurantName} />
-          </div>
-        </div>
-       </main>
-     </>
-   )
-
-}

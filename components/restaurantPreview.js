@@ -71,7 +71,7 @@ export default function RestaurantPreview(props){
             const itemName = props.item.itemName
             const itemImage = props.item.itemImage
             const itemPrice = props.item.itemPrice
-            const itemAvailability = props.item.itemAvailability
+            const itemAvailability = props.item.visible
             const itemDescription = props.item.itemDescription
             
   
@@ -94,6 +94,10 @@ export default function RestaurantPreview(props){
     
           }
     
+          if(!props.subCategory.visible){
+            return null
+          }
+
           return(
             <div id={`subCategory${props.categoryIndex}${props.subCategoryIndex}`}>
               <h3>{props.subCategory.subCategoryName}</h3>
@@ -105,7 +109,13 @@ export default function RestaurantPreview(props){
           )
     
         }
-    
+        
+        
+        //Hides Category if visibility set to null
+        if(!props.category.visible){
+          return null
+        }
+        //Category HTML
         return(
           <div className={styles.restaurantCategoryContainer} id={`category${props.categoryIndex}`}>
             <h2 className={styles.catName}>{props.category.categoryName}</h2>
