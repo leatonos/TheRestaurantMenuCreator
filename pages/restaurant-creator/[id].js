@@ -64,14 +64,6 @@ export default function RestaurantCreator({restaurantResult}){
   const serverResponse = JSON.parse(restaurantResult)
 
   useEffect(()=>{
-    
-   if(isLoading){return}
-   if(!user){
-    router.push('/')
-   }
-  },[user])
-
-  useEffect(()=>{
     if(isLoading){return}
     if(user.sub == serverResponse.ownerId){
       setRestaurantName(serverResponse.restaurantName)
@@ -79,6 +71,9 @@ export default function RestaurantCreator({restaurantResult}){
     }else{   
       router.push('/')
     }
+    if(!user){
+      router.push('/')
+     }
   },[user])
 
   async function updateMenu(){

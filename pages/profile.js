@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import QRCode from "react-qr-code";
+import styles from "../styles/Profile.module.css"
 
 export default function Profile() {
     
@@ -82,33 +83,40 @@ export default function Profile() {
         }
 
         return(
-            <div>
-                <h3>{props.menuInfo.restaurantName}</h3>
-                <div style={{ height: "auto", margin: "0 auto", maxWidth: 64, width: "100%" }}>
+            <div className={styles.menuContainer}>
+                
+                <div className={styles.qrCodeContainer}>
                   <QRCode
                     size={256}
-                    style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                    className={styles.qrCode}
                     value={'/restaurant/'+props.menuInfo._id}
                     viewBox={`0 0 256 256`}
                   />
                 </div>
-                <Link href={{pathname: '/restaurant/'+props.menuInfo._id}}>
+                <div className={styles.menuInfoContainer}>
+                  <h3>{props.menuInfo.restaurantName}</h3>
+                <div className={styles.menuOptions}>
+                  <Link href={{pathname: '/restaurant/'+props.menuInfo._id}}>
                     <button>Preview</button>
-                </Link>
-                <Link href={{pathname: '/restaurant-creator/'+props.menuInfo._id}}>
+                  </Link>
+                  <Link href={{pathname: '/restaurant-creator/'+props.menuInfo._id}}>
                     <button>Edit</button>
-                </Link>
-                <button onClick={() => deleteMenu(user.sub,props.menuInfo)}>Delete</button>
+                  </Link>
+                  <button onClick={() => deleteMenu(user.sub,props.menuInfo)}>Delete</button>
+                </div>
+                  
+                </div>
+               
             </div>
         )
     }
 
     return (
-        <>
+        <div className={styles.menuListContainer}>
             {userMenus.map((menu,index) =>
               <MenuItem menuInfo={menu} key={index}/>
             )}
-        </>
+        </div>
     )
   } 
 
