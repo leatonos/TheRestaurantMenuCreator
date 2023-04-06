@@ -2,6 +2,7 @@ import { useUser } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/router'
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import QRCode from "react-qr-code";
 
 export default function Profile() {
     
@@ -56,7 +57,6 @@ export default function Profile() {
 
         async function deleteMenu(userId,menu){
 
-
             const info = JSON.stringify({
                 "userId": userId,
                 "menuInfo":menu
@@ -84,7 +84,14 @@ export default function Profile() {
         return(
             <div>
                 <h3>{props.menuInfo.restaurantName}</h3>
-                <p></p>
+                <div style={{ height: "auto", margin: "0 auto", maxWidth: 64, width: "100%" }}>
+                  <QRCode
+                    size={256}
+                    style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                    value={'/restaurant/'+props.menuInfo._id}
+                    viewBox={`0 0 256 256`}
+                  />
+                </div>
                 <Link href={{pathname: '/restaurant/'+props.menuInfo._id}}>
                     <button>Preview</button>
                 </Link>

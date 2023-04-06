@@ -18,29 +18,33 @@ import {
   updateItemName,updateItemDescription,updateItemPrice,changeItemVisibility,changeItemPosition,changeItemImage,deleteItem
 } from '../redux/restaurantSlice'
 
-export default function RestaurantMenuCreator(props){
+
+export default function RestaurantMenuCreator(){
 
     //Redux code
-    const currentMenu = useSelector((state) => state.restaurantMenu.categories)
+    
     const dispatch = useDispatch()
+    const [categories,setCategories] = useState([])
 
-    useEffect(()=>{
-      if(props.restaurantInfo){
-        console.log('I am an existent menu')
-        dispatch(updateCategories(props.restaurantInfo))
-      }
-      console.log(props.restaurantInfo)
-    },[props.restaurantInfo])
-   
     function addCategory(){
-        let list = [...currentMenu];
+        let list = [...categories];
         list.push({categoryName:'Category Name',subCategories:[],visible:true})
         dispatch(updateCategories(list))
-       console.log(list)
+        setCategories(list)
     }
     const MenuCategory = (props) =>{
 
+        const [subCategories,setSubCategories] = useState([])
+
         function addSubcategory(){
+        let list = [...subCategories]
+        list.push(
+          {
+            subCategoryName:'Subcategory Name',
+            subCategoryItens:[],
+            visible:true
+          }
+        )
          dispatch(addSubCategory(props.categoryIndex))
         }
 
@@ -53,21 +57,38 @@ export default function RestaurantMenuCreator(props){
          * 
          */
         function changeCatPos(categoryObj,currentPos,newPos){
+          let list = [...categories]
+          //deletes the category in the original position
+          list.splice(currentPos,1)
+          //re-creates to the new postition
+          list.splice(newPos,0,categoryObj)
+          //updates on state
+          setCategories(list)
+          //updates on redux
           dispatch(changeCategoryPosition({categoryObj,currentPos,newPos}))
         }
 
         function deleteCat(position){
+          let list = [...categories]
+          //deletes the category in the original position
+          list.splice(position,1)
+          //updates on state
+          setCategories(list)
+          //updates on redux
           dispatch(deleteCategory(position))
         }
-
         function updateCatName(name){
+          let list = [...categories]
+          list[props.categoryIndex].categoryName = name
+          setCategories(list)
           dispatch(updateCategoryName({position:props.categoryIndex,newName:name}))
         }
         function showHideCategory(){
+          let list = [...categories]
           dispatch(toggleCategoryVisibility(props.categoryIndex))
         }
         function categoryVisibility(){
-          let list = [...currentMenu];
+          let list = [...categories];
           if(list[props.categoryIndex].visible){
             return show
           }else{
@@ -398,7 +419,7 @@ export default function RestaurantMenuCreator(props){
       )
     }
 
-    const categoriesList = currentMenu.map((category,index)=>
+    const categoriesList = categories.map((category,index)=>
     <MenuCategory 
         key={index} 
         categoryIndex={index} 

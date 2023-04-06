@@ -1,17 +1,15 @@
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import styles from '../styles/RestaurantPreview.module.css'
+import { useSelector } from 'react-redux'
 
 
 export default function RestaurantPreview(props){
 
     const [restaurantLogoURL, setRestaurantLogo] = useState('')
     const [selectedCategory,setSelectedCategory] = useState({index:0,subCategories:[]})
-    const [categories, setCategories] = useState([])
-
-   useEffect(()=>{
-      setCategories(props.restaurantInfo)
-    },[props])
+   
+    const categories = useSelector((state) => state.restaurantMenu.categories)
   
     function RestaurantHeader(){
   
@@ -128,7 +126,7 @@ export default function RestaurantPreview(props){
       }
       
       return(
-        props.restaurantInfo.map((category,index)=>
+        categories.map((category,index)=>
           <RestaurantCategory key={index} categoryIndex={index} category={category}/>
         )
       )
