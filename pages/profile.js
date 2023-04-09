@@ -1,6 +1,7 @@
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/router'
 import Link from 'next/link';
+import Head from 'next/head'
 import { useEffect, useState } from 'react';
 import QRCode from "react-qr-code";
 import styles from "../styles/Profile.module.css"
@@ -84,7 +85,6 @@ export default function Profile() {
 
         return(
             <div className={styles.menuContainer}>
-                
                 <div className={styles.qrCodeContainer}>
                   <QRCode
                     size={256}
@@ -123,11 +123,24 @@ export default function Profile() {
 
   return (
       user && (
-          <div>
-            <img src={user.picture} alt={user.name} />
-            <h2>{user.name}</h2>
-            <p>{user.email}</p>
-            <p>{user.sub}</p>
+        <>
+        <Head>
+         <title>{user.name}'s Profile</title>
+         <meta name="description" content="Your profile" />
+         <meta name="viewport" content="width=device-width, initial-scale=1" />
+         <link rel="icon" href="/favicon.ico" />
+       </Head>
+        
+          <main className={styles.main}>
+            <div className={styles.profileContainer}>
+              <div className={styles.imageContainer}>
+                <img src={user.picture} alt={user.name} />
+              </div>
+              <div className={styles.profileInfo}>
+                <h2>{user.name}</h2>
+                <p>{user.email}</p>
+              </div>
+            </div>
             <Link
                 href={{
                     pathname: '/restaurant-creator'
@@ -145,7 +158,8 @@ export default function Profile() {
 
             <UserRestaurants/>
 
-          </div>
+          </main>
+      </>
       )
   );
 }

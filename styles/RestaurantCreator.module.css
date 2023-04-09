@@ -125,3 +125,20 @@
 .previewContainer{
     width: 500px;
 }
+
+
+/* Responsive */
+
+@media only screen and (max-width: 600px) {
+    .previewContainer{
+        display: none;
+    }
+    .menuCreatorContainer{
+        width: 100%;
+    }
+    .restaurantMenuContainer{
+        display: flex;
+        flex-direction: row;
+        padding: 0px;
+    }
+  }

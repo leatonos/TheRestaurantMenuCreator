@@ -29,7 +29,6 @@ export default function RestaurantMenuCreator(props){
         console.log('I am an existent menu')
         dispatch(updateCategories(props.restaurantInfo))
       }
-      console.log(props.restaurantInfo)
     },[props.restaurantInfo])
    
     function addCategory(){

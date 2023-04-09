@@ -74,10 +74,10 @@ export default function RestaurantCreator(){
 
         <div className={styles.restaurantMenuContainer}>
           <div className={styles.menuCreatorContainer}>
-          <h1>Restaurant Creator</h1>
-          <label htmlFor='restaurantNameInput'>Restaurant Name</label>
-          <input type='text' onBlur={e=>setRestaurantName(e.target.value)} id='restaurantNameInput' />
-          <br/>
+            <h1>Restaurant Creator</h1>
+            <label htmlFor='restaurantNameInput'>Restaurant Name</label>
+            <input type='text' onBlur={e=>setRestaurantName(e.target.value)} id='restaurantNameInput' />
+            <br/>
             <RestaurantMenuCreator/>
             <button onClick={saveMenu} type='button'>Create Menu</button>
           </div>
