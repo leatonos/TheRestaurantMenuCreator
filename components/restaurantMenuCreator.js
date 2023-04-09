@@ -326,10 +326,12 @@ export default function RestaurantMenuCreator(props){
     async function changeImage(image){
 
       //Checks image size
+      /*
       if(image.size > 250000){
         console.log('File is too big')
         return
       }
+      */
 
       //Get a secure URL to upload the image
       const url = await fetch("/api/uploadPhotoItem").then( res => res.json())
