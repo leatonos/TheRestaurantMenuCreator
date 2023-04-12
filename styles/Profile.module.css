@@ -1,34 +1,68 @@
-
-
 .main{
-    padding: 20px;
+    padding: 0px;
+    background-color: #141414;
 }
+
 .profileContainer{
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin: 20px;
+    margin-bottom: 28vh;
+    height: 35vh;
 }
-.menuListContainer{
+.headerBanner{
     display: flex;
     flex-direction: row;
+    width: 100vw;
+    height: 100%;
+    background-color: black;
+    justify-content: center;
+    align-items: flex-end;
+}
+.imageContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 30px;
+    position: relative;
+    top: 160px;
+}
+.profileImage{
+    border-radius: 100%;
+    width: 150px;
+}
+.userName{
+    text-align: center;
+    color: white;
+}
+.restaurantName{
+    color: white;
+}
+
+.menuListContainer{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
     width: 100%;
+    justify-items: center;
 }
 .menuContainer{
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 30%;
+    width: calc(33% - 50px);
     height: 200px;
     padding: 15px 25px;
     margin: 20px;
-    background-color: #ffb703;
+    background-color: #0C0C0C;
+    border: 1px solid #616161;
     border-radius: 5px;
+    box-shadow: 8px 9px 17px 3px rgba(0,0,0,0.46);
 }
 .qrCodeContainer{
     display: flex;
     padding: 30px;
-    height: 120px;
+    width: 100px;
     background-color: white;
     border-radius: 15px;
 }
@@ -45,6 +79,12 @@
     display: flex;
     flex-direction: row;
 }
+.option{
+    background-color: white;
+    margin: 0px 3px;
+    border-radius: 5px;
+    font-size: 12px;
+}
 
 /* Responsive */
 
@@ -52,11 +92,13 @@
 
     .main{
         padding: 0px;
+        background-color: #141414;
     }
 
     .menuListContainer{
         flex-direction: column;
         align-items: center;
+        background-color: #141414;
     }
 
     .menuContainer{

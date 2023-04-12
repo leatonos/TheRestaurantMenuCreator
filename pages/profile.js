@@ -94,15 +94,15 @@ export default function Profile() {
                   />
                 </div>
                 <div className={styles.menuInfoContainer}>
-                  <h3>{props.menuInfo.restaurantName}</h3>
+                  <h3 className={styles.restaurantName}>{props.menuInfo.restaurantName}</h3>
                 <div className={styles.menuOptions}>
                   <Link href={{pathname: '/restaurant/'+props.menuInfo._id}}>
-                    <button>Preview</button>
+                    <button className={styles.option}>Preview</button>
                   </Link>
-                  <Link href={{pathname: '/restaurant-creator/'+props.menuInfo._id}}>
-                    <button>Edit</button>
+                  <Link className={styles.option} href={{pathname: '/restaurant-creator/'+props.menuInfo._id}}>
+                    <button className={styles.option}>Edit</button>
                   </Link>
-                  <button onClick={() => deleteMenu(user.sub,props.menuInfo)}>Delete</button>
+                  <button className={styles.option} onClick={() => deleteMenu(user.sub,props.menuInfo)}>Delete</button>
                 </div>
                   
                 </div>
@@ -130,24 +130,27 @@ export default function Profile() {
          <meta name="viewport" content="width=device-width, initial-scale=1" />
          <link rel="icon" href="/favicon.ico" />
        </Head>
-        
           <main className={styles.main}>
-            <div className={styles.profileContainer}>
+          <header className={styles.profileContainer}>
+            <div className={styles.headerBanner}>
               <div className={styles.imageContainer}>
-                <img src={user.picture} alt={user.name} />
-              </div>
-              <div className={styles.profileInfo}>
-                <h2>{user.name}</h2>
-                <p>{user.email}</p>
+                <img className={styles.profileImage} src={user.picture} alt={user.name} />
+                <div className={styles.profileInfo}>
+                  <h2 className={styles.userName}>{user.name}</h2>
+                </div>
+                <Link
+                    href={{
+                        pathname: '/restaurant-creator'
+                    }}
+                    >
+                    <button>Create Restaurant</button>
+                </Link>
               </div>
             </div>
-            <Link
-                href={{
-                    pathname: '/restaurant-creator'
-                }}
-                >
-                <button>Create Restaurant</button>
-            </Link>
+          </header>
+              
+            
+         
             <Link
                 href={{
                     pathname: '/api/auth/logout'
@@ -155,9 +158,7 @@ export default function Profile() {
                 >
                 <button>Logout</button>
             </Link>
-
             <UserRestaurants/>
-
           </main>
       </>
       )

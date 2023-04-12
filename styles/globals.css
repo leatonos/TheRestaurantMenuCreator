@@ -7,15 +7,48 @@
     src: url(./fonts/CaviarDreams.ttf);
   }
 
-h1,h2,h3{
-    font-family: NiceSugar;
+@font-face {
+  font-family: Proxima-Nova-Black;
+  src: url(./fonts/proximanova-black.otf);
 }
 
-p,button,a,h4,input{
-    font-family: CaviarDreams;
+@font-face {
+  font-family: Proxima-Nova-Bold;
+  src: url(./fonts/proximanova-bold.otf);
+}
+
+@font-face {
+  font-family: Proxima-Nova-SemiBold;
+  src: url(./fonts/proximanova-semibold.otf);
+}
+
+@font-face {
+  font-family: Proxima-Nova-Regular;
+  src: url(./fonts/proximanovaexcn-regular.otf);
+}
+
+@font-face {
+  font-family: MyriadPro-Regular;
+  src: url(./fonts/MYRIADPRO-REGULAR.OTF);
+}
+
+h1,h2,h3{
+    font-family: Proxima-Nova-Bold;
+}
+button{
+  font-family: Proxima-Nova-SemiBold;
+}
+
+p,a,h4,input{
+    font-family:  MyriadPro-Regular;
 }
 
 body{
     padding: 0;
     margin: 0px;
+}
+
+button{
+  padding: 6px;
+  border: none;
 }
