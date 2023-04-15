@@ -12,6 +12,7 @@
 }
 .headerBanner{
     display: flex;
+    background-image: url('../public/img/standard-bg-restaurant.jpg');
     flex-direction: row;
     width: 100vw;
     height: 100%;
@@ -50,7 +51,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: calc(33% - 50px);
+    width: calc(30% - 50px);
     height: 200px;
     padding: 15px 25px;
     margin: 20px;
