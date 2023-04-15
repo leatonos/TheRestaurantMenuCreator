@@ -32,6 +32,11 @@
   src: url(./fonts/MYRIADPRO-REGULAR.OTF);
 }
 
+
+body{
+  background-color: #141414;
+}
+
 h1,h2,h3{
     font-family: Proxima-Nova-Bold;
 }

@@ -56,8 +56,6 @@ export default function RestaurantCreator(){
       console.error(error);
       alert(error.message);
     }
-    
-
   }
  
   //RestaurantCreatorContainer

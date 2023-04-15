@@ -147,10 +147,7 @@ export default function Profile() {
                 </Link>
               </div>
             </div>
-          </header>
-              
-            
-         
+          </header>       
             <Link
                 href={{
                     pathname: '/api/auth/logout'

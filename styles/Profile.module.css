@@ -88,8 +88,22 @@
 }
 
 /* Responsive */
+  @media only screen and (max-width: 1200px) {
+    .profileContainer{
+        margin-bottom: 16vh;
+    }
+    .menuContainer{
+        width: calc(50% - 85px);
+        margin-bottom: 20px;
+        padding: 0px 20px;
+    }
+    .qrCodeContainer{
+        padding: 10px;
+    }
 
-@media only screen and (max-width: 600px) {
+  }
+
+  @media only screen and (max-width: 600px) {
 
     .main{
         padding: 0px;
@@ -103,8 +117,8 @@
     }
 
     .menuContainer{
-        width: calc(90% - 40px);
-        margin: 0px;
+        width: calc(100% - 100px);
+        margin-bottom: 20px;
         padding: 0px 20px;
     }
 
