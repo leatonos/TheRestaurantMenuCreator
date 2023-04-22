@@ -123,7 +123,6 @@ export default function RestaurantCreator({restaurantResult}){
             <button onClick={updateMenu} type='button'>Update Menu</button>
           </div>
           <div className={styles.previewContainer}>
-            <h3>Preview</h3>
             <RestaurantPreview restaurantInfo={currentMenu} restaurantName={restaurantName} />
           </div>
         </div>

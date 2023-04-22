@@ -5,7 +5,12 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import styles from '../../styles/Restaurant.module.css'
 import { ObjectId } from 'mongodb'
+import RestaurantPreview from '../../components/restaurantPreview'
 
+
+//Redux
+import { useDispatch, useSelector } from 'react-redux'
+import { updateCategories } from '../../redux/restaurantSlice'
 
 export async function getServerSideProps(context) {
 
@@ -56,35 +61,7 @@ export default function Restaurant({restaurant}){
 
    */
 
-  function RestaurantHeader(){
-
-    function selectCategory(category){
-      //console.log(category)
-      setSelectedCategory(category)
-    }
-
-    return(
-      <header className={styles.restaurantHeader}>
-        <div className={styles.restaurantLogoContainer}>
-          <img src={restaurantLogoURL} className={styles.restaurantLogo} />
-        </div>
-         {/* Categories Section */}
-        <div className={styles.restaurantHeaderCategoriesContainer}>
-          {restaurantCategories.map((category,index)=>
-            <p key={index} onClick={()=>selectCategory(category)} className={styles.restaurantHeaderCategory}>{category.categoryName}</p>
-          )}
-        </div>
-        {/* Subcategories Section */}
-        <div className={styles.restaurantHeaderSubcategoryContainer}>
-          {selectedCategory.subCategories.map((subCategory, index)=>
-            <p key={index} className={styles.restaurantHeaderSubcategory}>{subCategory.subCategoryName}</p>
-          )}
-        </div>
-      </header>
-    )
-  }
-
-
+  const dispatch = useDispatch()
 
   useEffect(()=>{
     //in case the restaurant Id is wrong or invalid this will happen
@@ -99,77 +76,12 @@ export default function Restaurant({restaurant}){
     setRestaurantName(restaurantInfo.restaurantName)
     setRestaurantCategories(restaurantInfo.categories)
 
+    dispatch(updateCategories(restaurantInfo.categories))
+
+
     console.log()
 
   },[])
-
-  const RestaurantMenu = () =>{
-
-    const RestaurantCategory = (props) =>{
-
-      const RestaurantSubCategory = (props) =>{
-  
-        const RestaurantItem = (props) =>{
-
-          const itemName = props.item.itemName
-          const itemImage = props.item.itemImage
-          const itemPrice = props.item.itemPrice
-          const itemAvailability = props.item.itemAvailability
-          const itemDescription = props.item.itemDescription
-          
-
-          if(!itemAvailability){
-            return null
-          }
-  
-          return(
-            <div className={styles.itemContainer}>
-              <div className={styles.itemDescriptionContainer}>
-                <p>{itemName}</p>
-                <p>{itemDescription}</p>
-                <p>{itemPrice}</p>
-              </div>
-              <div className={styles.itemImageContainer}>
-                <img src={itemImage} className={styles.itemImage} />
-              </div>
-            </div>
-          )
-  
-        }
-  
-        return(
-          <div>
-            <h3>{props.subCategory.subCategoryName}</h3>
-            {props.subCategory.subCategoryItens.map((item,index)=>
-              <RestaurantItem key={index} item={item}/>
-            )}
-          </div>
-          
-        )
-  
-      }
-  
-      return(
-        <div className={styles.restaurantCategoryContainer}>
-          <h2>{props.category.categoryName}</h2>
-          {props.category.subCategories.map((subCategory)=>
-              <RestaurantSubCategory subCategory={subCategory}/>
-            )
-          }
-        </div>
-      )
-    }
-    
-    return(
-        restaurantCategories.map((category,index)=>
-        <RestaurantCategory key={index} category={category}/>
-      )
-    )
-
-  } 
-
-  
- 
    return (
      <>
        <Head>
@@ -179,13 +91,9 @@ export default function Restaurant({restaurant}){
          <link rel="icon" href="/favicon.ico" />
        </Head>
 
-       <main className={styles.main}>
-        <RestaurantHeader />
-        <div className={styles.restaurantMenuContainer}>
-          <h1>{restaurantName}</h1>
-          <RestaurantMenu/>
-        </div>
-       </main>
+       
+          <RestaurantPreview/>
+       
      </>
    )
 

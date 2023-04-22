@@ -1,8 +1,6 @@
 .main{
     width: 100%;
-    max-width: 380px;
 }
-
 
 /* Restaurant Header */
 .restaurantHeader{
@@ -66,7 +64,7 @@
 
 /* Restaurant Menu */
 .restaurantMenuContainer{
-    height: 420px;
+    max-height: calc(100vh - 170px);
     overflow-y: auto;
     padding: 12px;
 }
@@ -99,8 +97,13 @@
 }
 
 
-/* Responsive */
+/* Responsive on Editor */
 
-@media only screen and (max-width: 600px) {
+@media only screen and (min-width: 600px) {
+
+
+    .restaurantMenuContainer{
+      height: calc(100vh - 240px);
+    }
    
   }
